@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Beach Buggy Blitz 🏖️</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Boogaloo&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- ═══════ LOADING ═══════ -->
+<div id="loading-screen">
+  <div class="load-sun"></div>
+  <div class="load-waves"></div>
+  <div class="load-content">
+    <div class="load-title">🏖️ BEACH BUGGY<br><span>BLITZ</span></div>
+    <div class="load-bar-wrap"><div class="load-bar" id="load-bar"></div></div>
+    <div class="load-tip" id="load-tip">Loading sandy tracks...</div>
+  </div>
+</div>
+
+<!-- ═══════ MAIN MENU ═══════ -->
+<div id="main-menu" class="screen hidden">
+  <canvas id="menu-canvas"></canvas>
+  <div class="menu-overlay">
+    <div class="menu-header">
+      <div class="menu-sun">☀️</div>
+      <h1 class="menu-title">BEACH BUGGY<br><span class="title-accent">BLITZ</span></h1>
+      <p class="menu-sub">Drift · Race · Dominate the Beach!</p>
+    </div>
+    <div class="menu-buttons">
+      <button class="btn-big btn-play" id="btn-play">
+        <span class="btn-icon">🏁</span> RACE NOW!
+      </button>
+      <button class="btn-big btn-garage" id="btn-garage">
+        <span class="btn-icon">🚗</span> GARAGE
+      </button>
+      <button class="btn-big btn-records" id="btn-records">
+        <span class="btn-icon">🏆</span> RECORDS
+      </button>
+      <button class="btn-big btn-howto" id="btn-howto">
+        <span class="btn-icon">❓</span> HOW TO PLAY
+      </button>
+    </div>
+    <div class="menu-besttime" id="menu-besttime"></div>
+  </div>
+</div>
+
+<!-- ═══════ TRACK SELECT ═══════ -->
+<div id="track-select" class="screen hidden">
+  <div class="ts-bg"></div>
+  <div class="ts-content">
+    <h2 class="ts-title">🏁 CHOOSE YOUR TRACK</h2>
+    <div class="track-grid" id="track-grid"></div>
+    <button class="btn-back" id="ts-back">← BACK</button>
+  </div>
+</div>
+
+<!-- ═══════ GAME SCREEN ═══════ -->
+<div id="game-screen" class="screen hidden">
+  <canvas id="game-canvas"></canvas>
+
+  <!-- HUD -->
+  <div class="hud-top">
+    <div class="hud-left">
+      <div class="hud-speed-wrap">
+        <div class="hud-speed-val" id="hud-speed">0</div>
+        <div class="hud-speed-unit">km/h</div>
+      </div>
+      <div class="hud-lap">
+        <span id="hud-lap">LAP 1/3</span>
+      </div>
+    </div>
+    <div class="hud-center">
+      <div class="hud-pos" id="hud-pos">1ST</div>
+      <div class="hud-timer" id="hud-timer">0:00.000</div>
+    </div>
+    <div class="hud-right">
+      <div class="hud-nitro-wrap">
+        <div class="hud-nitro-label">NITRO 🔥</div>
+        <div class="hud-nitro-bar"><div class="hud-nitro-fill" id="nitro-fill"></div></div>
+      </div>
+      <button class="btn-pause-game" id="btn-pause-game">⏸</button>
+    </div>
+  </div>
+  <div class="hud-minimap" id="hud-minimap">
+    <canvas id="minimap-canvas" width="120" height="90"></canvas>
+  </div>
+  <div class="hud-msg hidden" id="hud-msg"></div>
+  <div class="hud-countdown hidden" id="hud-countdown"></div>
+
+  <!-- Mobile controls -->
+  <div class="mobile-controls" id="mobile-controls">
+    <button class="mc-btn mc-left" id="mc-left">◀</button>
+    <button class="mc-btn mc-nitro" id="mc-nitro">🔥</button>
+    <button class="mc-btn mc-right" id="mc-right">▶</button>
+    <button class="mc-btn mc-brake" id="mc-brake">🛑</button>
+    <div class="mc-gas-wrap">
+      <button class="mc-btn mc-gas" id="mc-gas">▲<br><small>GAS</small></button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ PAUSE SCREEN ═══════ -->
+<div id="pause-screen" class="screen hidden overlay-screen">
+  <div class="overlay-box">
+    <div class="overlay-icon">⏸</div>
+    <h2 class="overlay-title">PAUSED</h2>
+    <div class="overlay-btns">
+      <button class="btn-ov btn-resume" id="btn-resume">▶ RESUME</button>
+      <button class="btn-ov btn-restart" id="btn-restart">↺ RESTART</button>
+      <button class="btn-ov btn-quit" id="btn-quit-pause">🏠 MENU</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ RACE FINISH ═══════ -->
+<div id="finish-screen" class="screen hidden overlay-screen">
+  <div class="overlay-box finish-box">
+    <div class="finish-icon" id="finish-icon">🏆</div>
+    <h2 class="finish-title" id="finish-title">RACE COMPLETE!</h2>
+    <div class="finish-pos" id="finish-pos">1ST PLACE</div>
+    <div class="finish-stats">
+      <div class="fs-row"><span>TOTAL TIME</span><span id="fin-time">--</span></div>
+      <div class="fs-row"><span>BEST LAP</span><span id="fin-bestlap">--</span></div>
+      <div class="fs-row"><span>TOP SPEED</span><span id="fin-speed">-- km/h</span></div>
+      <div class="fs-row highlight"><span>RECORD?</span><span id="fin-record">--</span></div>
+    </div>
+    <div class="overlay-btns">
+      <button class="btn-ov btn-resume" id="btn-again">↺ RACE AGAIN</button>
+      <button class="btn-ov btn-quit" id="btn-quit-finish">🏠 MENU</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ GARAGE ═══════ -->
+<div id="garage-screen" class="screen hidden">
+  <div class="garage-bg"></div>
+  <div class="garage-content">
+    <h2 class="garage-title">🚗 GARAGE</h2>
+    <div class="car-showcase" id="car-showcase"></div>
+    <div class="car-nav">
+      <button class="car-nav-btn" id="car-prev">◀</button>
+      <div class="car-info">
+        <div class="car-name" id="car-name">Sandy Drifter</div>
+        <div class="car-stats" id="car-stats"></div>
+      </div>
+      <button class="car-nav-btn" id="car-next">▶</button>
+    </div>
+    <button class="btn-select-car" id="btn-select-car">✓ SELECT THIS CAR</button>
+    <button class="btn-back" id="garage-back">← BACK</button>
+  </div>
+</div>
+
+<!-- ═══════ RECORDS ═══════ -->
+<div id="records-screen" class="screen hidden">
+  <div class="records-bg"></div>
+  <div class="records-content">
+    <h2 class="records-title">🏆 BEST TIMES</h2>
+    <div id="records-list"></div>
+    <button class="btn-back" id="records-back">← BACK</button>
+  </div>
+</div>
+
+<!-- ═══════ HOW TO PLAY ═══════ -->
+<div id="howto-screen" class="screen hidden">
+  <div class="howto-bg"></div>
+  <div class="howto-content">
+    <h2 class="howto-title">❓ HOW TO PLAY</h2>
+    <div class="howto-grid">
+      <div class="howto-card">
+        <div class="hc-icon">⌨️</div>
+        <h3>KEYBOARD</h3>
+        <ul>
+          <li><kbd>W</kbd> / <kbd>↑</kbd> — Accelerate</li>
+          <li><kbd>S</kbd> / <kbd>↓</kbd> — Brake / Reverse</li>
+          <li><kbd>A</kbd> / <kbd>←</kbd> — Steer Left</li>
+          <li><kbd>D</kbd> / <kbd>→</kbd> — Steer Right</li>
+          <li><kbd>SPACE</kbd> — Nitro Boost 🔥</li>
+          <li><kbd>P</kbd> / <kbd>ESC</kbd> — Pause</li>
+        </ul>
+      </div>
+      <div class="howto-card">
+        <div class="hc-icon">📱</div>
+        <h3>MOBILE</h3>
+        <ul>
+          <li>◀ ▶ buttons — Steer</li>
+          <li>▲ GAS button — Accelerate</li>
+          <li>🛑 BRAKE button — Slow down</li>
+          <li>🔥 NITRO button — Boost!</li>
+        </ul>
+      </div>
+      <div class="howto-card">
+        <div class="hc-icon">🏁</div>
+        <h3>RACING TIPS</h3>
+        <ul>
+          <li>Drift into corners for speed</li>
+          <li>Collect ⚡ for nitro boosts</li>
+          <li>Avoid 🌊 water hazards</li>
+          <li>Hit 🏖️ sand for drift bonus</li>
+          <li>3 laps per race — go fast!</li>
+          <li>Beat records for trophies!</li>
+        </ul>
+      </div>
+      <div class="howto-card">
+        <div class="hc-icon">🤖</div>
+        <h3>AI OPPONENTS</h3>
+        <ul>
+          <li>Race against 3 AI buggies</li>
+          <li>Each has unique driving style</li>
+          <li>Difficulty increases each track</li>
+          <li>Overtake for better position!</li>
+        </ul>
+      </div>
+    </div>
+    <button class="btn-back" id="howto-back">← BACK</button>
+  </div>
+</div>
+
+<script src="game.js"></script>
+</body>
+</html>
